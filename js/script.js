@@ -27,10 +27,17 @@ const movieDB = {
 
 const adv = document.querySelector('.promo__adv'),
       promoBg = document.querySelector('.promo__bg'),
-      genre = promoBg.querySelector('.promo__genre');
+      genre = promoBg.querySelector('.promo__genre'),
+      films = document.querySelectorAll('.promo__interactive-item');
 
 adv.remove();
 
 genre.textContent = 'драма';
 
 promoBg.style.background = 'url("../img/bg.jpg")';
+
+movieDB.movies.sort();
+
+films.forEach((item, i) => {
+    item.textContent =`${i+1}. ${movieDB.movies[i]}`;
+});
