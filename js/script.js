@@ -26,8 +26,11 @@ const movieDB = {
 
 
 const adv = document.querySelector('.promo__adv'),
-      genre = document.querySelector('.promo__genre');
+      promoBg = document.querySelector('.promo__bg'),
+      genre = promoBg.querySelector('.promo__genre');
 
 adv.remove();
 
 genre.textContent = 'драма';
+
+promoBg.style.background = 'url("../img/bg.jpg")';
