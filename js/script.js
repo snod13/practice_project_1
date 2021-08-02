@@ -52,6 +52,10 @@ function formListMovie() {
     movieDB.movies.sort();
 
     movieDB.movies.forEach((item, i) => {
+        if (item.length > 21) {
+            const newItem = item.slice(0, 21);
+            item = `${newItem} ...`;
+        }
         movieList.innerHTML += `
         <li class="promo__interactive-item">${i+1}. ${item}
             <div class="delete"></div>
@@ -69,4 +73,5 @@ submitBtn.addEventListener('click', event => {
         formListMovie();
         input.value = ''; 
     }
+    console.log(movieDB.movies);
 });
