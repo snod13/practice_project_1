@@ -34,7 +34,9 @@ const adv = document.querySelectorAll('.promo__adv img'),
     movieList = document.querySelector('.promo__interactive-list'),
     form = document.querySelector('.add'),
     input = form.querySelector('.adding__input'),
-    submitBtn = form.querySelector('button');
+    submitBtn = form.querySelector('button'),
+    makeLike = form.querySelector('[type = "checkbox"]'),
+    deleteBtns = movieList.querySelectorAll('.delete');
 
 adv.forEach(item => {
     item.remove();
@@ -71,7 +73,19 @@ submitBtn.addEventListener('click', event => {
     if (input.value != '') {
         movieDB.movies.push(input.value);
         formListMovie();
-        input.value = ''; 
+        input.value = '';
+        makeLike.checked = false; 
     }
-    console.log(movieDB.movies);
+});
+
+deleteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.parentElement().remove();
+    });
+});
+
+makeLike.addEventListener('click', () => {
+    if (makeLike.checked) {
+        console.log('Добавляем любимый фильм');
+    }
 });
