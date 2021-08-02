@@ -17,75 +17,92 @@ P.S. Здесь есть несколько вариантов решения з
 
 'use strict';
 
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
+document.addEventListener('DOMContentLoaded', () => {
 
+    const movieDB = {
+        movies: [
+            "Логан",
+            "Лига справедливости",
+            "Ла-ла лэнд",
+            "Одержимость",
+            "Скотт Пилигрим против..."
+        ]
+    };
+    
+    
+    const adv = document.querySelectorAll('.promo__adv img'),
+        promoBg = document.querySelector('.promo__bg'),
+        genre = promoBg.querySelector('.promo__genre'),
+        movieList = document.querySelector('.promo__interactive-list'),
+        form = document.querySelector('.add'),
+        input = form.querySelector('.adding__input'),
+        // submitBtn = form.querySelector('button'),
+        makeLike = form.querySelector('[type = "checkbox"]');
 
-const adv = document.querySelectorAll('.promo__adv img'),
-    promoBg = document.querySelector('.promo__bg'),
-    genre = promoBg.querySelector('.promo__genre'),
-    movieList = document.querySelector('.promo__interactive-list'),
-    form = document.querySelector('.add'),
-    input = form.querySelector('.adding__input'),
-    submitBtn = form.querySelector('button'),
-    makeLike = form.querySelector('[type = "checkbox"]'),
-    deleteBtns = movieList.querySelectorAll('.delete');
-
-adv.forEach(item => {
-    item.remove();
-});
-
-genre.textContent = 'драма';
-
-promoBg.style.backgroundImage = 'url("img/bg.jpg")';
-
-
-
-function formListMovie() {
-    movieList.innerHTML = '';
-
-    movieDB.movies.sort();
-
-    movieDB.movies.forEach((item, i) => {
-        if (item.length > 21) {
-            const newItem = item.slice(0, 21);
-            item = `${newItem} ...`;
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+    
+        if (input.value) {
+            movieDB.movies.push(input.value);
+    
+            formListMovie(movieDB.movies, movieList);
         }
-        movieList.innerHTML += `
-        <li class="promo__interactive-item">${i+1}. ${item}
-            <div class="delete"></div>
-        </li>
-    `;
+        
+        if (makeLike.checked) {
+            console.log('Добавляем любимый фильм');
+        }
+
+        event.target.reset();
     });
-}
+    
+    
+    const deleteAdv = (arr) => {
+        arr.forEach(item => {
+            item.remove();
+        });
+    };
+    
+    const makeChanges = () => {
+        genre.textContent = 'драма';
+    
+        promoBg.style.backgroundImage = 'url("img/bg.jpg")';
+    };
 
-formListMovie();
+    const sortArr = (arr) => {
+        arr.sort();
+    };
+    
+    function formListMovie(films, parent) {
+        parent.innerHTML = '';
+    
+        sortArr(films);
+    
+        films.forEach((item, i) => {
+            if (item.length > 21) {
+                const newItem = item.slice(0, 21);
+                item = `${newItem}...`;
+            }
 
-submitBtn.addEventListener('click', event => {
-    event.preventDefault();
-    if (input.value != '') {
-        movieDB.movies.push(input.value);
-        formListMovie();
-        input.value = '';
-        makeLike.checked = false; 
+            parent.innerHTML += `
+            <li class="promo__interactive-item">${i+1}. ${item}
+                <div class="delete"></div>
+            </li>
+            `;
+        });
+
+        const deleteBtns = document.querySelectorAll('.delete');
+
+        deleteBtns.forEach((btn, i) => {
+            btn.addEventListener('click', () => {
+                btn.parentElement.remove();
+                films.splice(i, 1);
+                formListMovie(films, parent);
+            });
+        });
     }
-});
+    
+    deleteAdv(adv);
+    makeChanges();
+    formListMovie(movieDB.movies, movieList);
 
-deleteBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        btn.parentElement().remove();
-    });
-});
-
-makeLike.addEventListener('click', () => {
-    if (makeLike.checked) {
-        console.log('Добавляем любимый фильм');
-    }
 });
